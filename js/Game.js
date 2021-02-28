@@ -48,15 +48,96 @@ class Game {
   }
 
   handleInteraction(e) {
-    const keys = document.querySelectorAll('.key');
-
     //If any of the keyboard buttons are clicked hangle interaction and game logic
-    if (e.target.tagName === 'BUTTON' && e.target.textContent !== 'Start Game') {
-      keys.forEach(key => {
-        if (e.target.textContent === key.textContent) {
-          console.log(`${key.textContent} pressed!`);
-        }
-      });
+    if (
+      e.target.tagName === 'BUTTON' &&
+      e.target.textContent !== 'Start Game' &&
+      e.target.textContent !== 'Play Again'
+    ) {
+      if (this.activePhrase.checkLetter(e)) {
+        e.target.disabled = true;
+        e.target.classList.add('chosen');
+        this.activePhrase.showMatchedLetter(e.target.textContent);
+      } else {
+        e.target.disabled = true;
+        e.target.classList.add('wrong');
+        this.removeLife();
+      }
+
+      if (this.checkForWin()) {
+        this.gameOver(true);
+      }
+
+      if (this.missed === 5) {
+        this.gameOver(false);
+      }
     }
+  }
+
+  /**
+   * Removes available heart icon from the page and adds 1 to the missed value
+   */
+  removeLife() {
+    const tries = document.querySelectorAll('.tries');
+    const lastHeart = tries.length - 1 - this.missed;
+    tries[
+      lastHeart
+    ].innerHTML = `<img src="images/lostHeart.png" alt="Heart Icon Lost" height="35" width="30">`;
+    this.missed++;
+  }
+
+  /**
+   * Check if all the letters on the page are filled correctly
+   * @return {Boolean} - Returns true if the player won or false otherwise.
+   */
+  checkForWin() {
+    const notFilledLetters = document.querySelectorAll('.hide');
+    if (notFilledLetters.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  gameOver(win) {
+    const startScreen = document.querySelector('#overlay');
+    const message = document.querySelector('#game-over-message');
+    const startBtn = document.querySelector('#btn__reset');
+
+    startScreen.style.display = 'inherit';
+    startBtn.innerHTML = 'Play Again';
+
+    if (win) {
+      startScreen.className = 'win';
+      message.textContent = `You Won 🎉! "${this.activePhrase.phrase.toUpperCase()}" was correct the phrase`;
+    } else {
+      startScreen.className = 'lose';
+      message.textContent = `You Lost 😢! "${this.activePhrase.phrase.toUpperCase()}" was the correct phrase`;
+    }
+  }
+
+  gameReset() {
+    const keys = document.querySelectorAll('.key');
+    const phraseLIs = document.querySelectorAll('#phrase > ul > li');
+    const hearts = document.querySelectorAll('.tries');
+
+    //Reset keys
+    keys.forEach(key => {
+      key.className = 'key';
+      key.disabled = false;
+    });
+
+    //Reset displayed LI placeholders
+    phraseLIs.forEach(li => {
+      li.remove();
+    });
+
+    //Reset hearts-lives
+    hearts.forEach(heart => {
+      heart.innerHTML = `<img src="images/liveHeart.png" alt="Heart Icon" height="35" width="30" />`;
+    });
+
+    //Reset opportunities
+    this.missed = 0;
   }
 }

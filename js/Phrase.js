@@ -30,11 +30,22 @@ class Phrase {
 
   /**
    * Checks to see if the selected letter matches any of the characters in the phrase word.
+   * @param {Object} e - Event object.
+   * @return {Boolean} - Returns true if the word matches and false otherwise.
    */
-  checkLetter() {}
+  checkLetter(e) {
+    return this.phrase.includes(e.target.textContent) ? true : false;
+  }
 
   /**
    * Displays the user's selected letter that matched a character in the phrase word.
+   * @param {String} char - The letter to be shown
    */
-  showMatchedLetter() {}
+  showMatchedLetter(char) {
+    const phrasePlaceholders = document.querySelectorAll(`.${char}`);
+
+    phrasePlaceholders.forEach(letter => {
+      letter.className = 'show letter';
+    });
+  }
 }

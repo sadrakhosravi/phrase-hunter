@@ -7,6 +7,7 @@ const mainContent = document.querySelector('.main-container');
 const game = new Game();
 
 startBtn.addEventListener('click', e => {
+  game.gameReset();
   game.startGame();
 });
 
