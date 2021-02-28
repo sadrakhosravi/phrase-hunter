@@ -47,6 +47,10 @@ class Game {
     this.activePhrase.addPhraseToDisplay();
   }
 
+  /**
+   * Checks the button that was clicked and performs the game logic.
+   * @param {Object} e - Clicked event object
+   */
   handleInteraction(e) {
     //If any of the keyboard buttons are clicked hangle interaction and game logic
     if (
@@ -99,6 +103,10 @@ class Game {
     }
   }
 
+  /**
+   * Outputs the game over message and overlay on the page based on whether the use won or lost.
+   * @param {Boolean} win - Whether the game was won or not (true for yes flase for no).
+   */
   gameOver(win) {
     const startScreen = document.querySelector('#overlay');
     const message = document.querySelector('#game-over-message');
@@ -116,6 +124,10 @@ class Game {
     }
   }
 
+  /**
+   * Resets the game by removing old phrase placeholders, resetting the keyboard, resetting available hearts,
+   * and resetting missed to 0
+   */
   gameReset() {
     const keys = document.querySelectorAll('.key');
     const phraseLIs = document.querySelectorAll('#phrase > ul > li');
