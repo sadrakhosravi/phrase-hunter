@@ -14,4 +14,7 @@ startBtn.addEventListener('click', e => {
 mainContent.addEventListener('click', e => {
   game.handleInteraction(e);
 });
-//Testing
+
+document.addEventListener('keyup', e => {
+  game.handleInteraction(e);
+});

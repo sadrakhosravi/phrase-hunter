@@ -30,11 +30,11 @@ class Phrase {
 
   /**
    * Checks to see if the selected letter matches any of the characters in the phrase word.
-   * @param {Object} e - Event object.
+   * @param {String} char - Character to be found in the phrase.
    * @return {Boolean} - Returns true if the word matches and false otherwise.
    */
-  checkLetter(e) {
-    return this.phrase.includes(e.target.textContent) ? true : false;
+  checkLetter(char) {
+    return this.phrase.includes(char) ? true : false;
   }
 
   /**

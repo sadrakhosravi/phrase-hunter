@@ -54,17 +54,60 @@ class Game {
   handleInteraction(e) {
     //If any of the keyboard buttons are clicked hangle interaction and game logic
     if (
-      e.target.tagName === 'BUTTON' &&
-      e.target.textContent !== 'Start Game' &&
-      e.target.textContent !== 'Play Again'
+      (e.target.tagName === 'BUTTON' &&
+        e.target.textContent !== 'Start Game' &&
+        e.target.textContent !== 'Play Again') ||
+      typeof e.key === 'string'
     ) {
-      if (this.activePhrase.checkLetter(e)) {
-        e.target.disabled = true;
-        e.target.classList.add('chosen');
-        this.activePhrase.showMatchedLetter(e.target.textContent);
+      let targetVal = '';
+      if (e.key !== undefined) {
+        const charRegEx = /^[a-z]{1}$/;
+
+        if (charRegEx.test(e.key)) {
+          targetVal = e.key;
+        } else {
+          alert('Sorry the key you pressed is not a letter! Please try again.');
+          return;
+        }
+      }
+
+      if (e.target.tagName === 'BUTTON') {
+        targetVal = e.target.textContent;
+      }
+
+      if (document.querySelector('#overlay').style.display !== 'none') {
+        alert('Please start a game first!');
+        return;
+      }
+      const keyboardKeys = document.querySelectorAll('.key');
+
+      //Checks to see if the letter is part of the phrase.
+      if (this.activePhrase.checkLetter(targetVal)) {
+        if (e.target.tagName === 'BUTTON') {
+          e.target.disabled = true;
+          e.target.classList.add('chosen');
+        } else {
+          keyboardKeys.forEach(key => {
+            if (key.textContent === e.key) {
+              key.disabled = true;
+              key.classList.add('chosen');
+            }
+          });
+        }
+        this.activePhrase.showMatchedLetter(targetVal);
       } else {
-        e.target.disabled = true;
-        e.target.classList.add('wrong');
+        if (e.target.tagName === 'BUTTON') {
+          e.target.disabled = true;
+          e.target.classList.add('wrong');
+        } else {
+          keyboardKeys.forEach(key => {
+            if (key.textContent === e.key) {
+              key.disabled = true;
+              key.classList.add('wrong');
+            }
+          });
+        }
+
         this.removeLife();
       }
 
