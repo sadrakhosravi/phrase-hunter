@@ -117,8 +117,9 @@ button {
   padding: 20px 1px 0 1px;
   margin-right: 2px;
   border-radius: 5px;
-  -webkit-animation-duration: 0.5s;
-  animation-duration: 0.5s;
+  animation: shake;
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
 }
 
 /* Keyboard */
@@ -170,6 +171,8 @@ button {
   left: 0;
   right: 0;
   border-radius: 5px;
+  transition: all 0.3s ease;
+  z-index: 2000;
 }
 
 .title {
@@ -198,4 +201,27 @@ button {
 
 .lose a {
   color: var(--color-lose);
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }

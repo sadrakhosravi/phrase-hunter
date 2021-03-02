@@ -59,26 +59,13 @@ class Game {
         e.target.textContent !== 'Play Again') ||
       typeof e.key === 'string'
     ) {
-      let targetVal = '';
-      if (e.key !== undefined) {
-        const charRegEx = /^[a-z]{1}$/;
+      const targetVal = this.eventValue(e);
+      console.log(targetVal);
 
-        if (charRegEx.test(e.key)) {
-          targetVal = e.key;
-        } else {
-          alert('Sorry the key you pressed is not a letter! Please try again.');
-          return;
-        }
-      }
-
-      if (e.target.tagName === 'BUTTON') {
-        targetVal = e.target.textContent;
-      }
-
-      if (document.querySelector('#overlay').style.display !== 'none') {
-        alert('Please start a game first!');
+      if (!targetVal) {
         return;
       }
+
       const keyboardKeys = document.querySelectorAll('.key');
 
       //Checks to see if the letter is part of the phrase.
@@ -122,6 +109,27 @@ class Game {
   }
 
   /**
+   * Checks if the event triggered is a keyup or a click on the onscreen keyboard.
+   * @param {e} e - Event object
+   * @return {String} - The value of the triggered event if it is between a-z.
+   */
+  eventValue(e) {
+    if (e.key !== undefined) {
+      const charRegEx = /^[a-z]{1}$/;
+
+      if (charRegEx.test(e.key)) {
+        return e.key;
+      } else {
+        alert('Sorry the key you pressed is not a letter! Please try again.');
+      }
+    }
+
+    if (e.target.tagName === 'BUTTON') {
+      return e.target.textContent;
+    }
+  }
+
+  /**
    * Removes available heart icon from the page and adds 1 to the missed value
    */
   removeLife() {
@@ -160,7 +168,7 @@ class Game {
 
     if (win) {
       startScreen.className = 'win';
-      message.textContent = `You Won 🎉! "${this.activePhrase.phrase.toUpperCase()}" was correct the phrase`;
+      message.textContent = `You Won 🎉! "${this.activePhrase.phrase.toUpperCase()}" was the correct phrase`;
     } else {
       startScreen.className = 'lose';
       message.textContent = `You Lost 😢! "${this.activePhrase.phrase.toUpperCase()}" was the correct phrase`;
